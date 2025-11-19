@@ -4,7 +4,11 @@ namespace MonsterLab;
 
 public class MonsterPart
 {
+    string name;
     int maxHp;
+
+    int block = 0;
+
     public int hp
     {
         get
@@ -16,36 +20,33 @@ public class MonsterPart
             hp = Math.Max(value, 0);
         }
     }
-    int maxEnergy;
-    int energy
+
+    PartAction[] actions;
+
+    bool stunned;
+    public bool broken
     {
         get
         {
-            return energy;
+            if (hp>0)
+            {
+                return false;
+            }
+            return true;
         }
-        set
+        private set
         {
-            energy = Math.Max(value, 0);
-            energy = Math.Min(value, maxEnergy);
+           
         }
     }
 
-    bool stunned;
-
-    public MonsterPart(int hp, int energy)
+    public MonsterPart(string name, int hp, PartAction[] actions)
     {
+        this.name = name;
+
         this.maxHp = hp;
         this.hp = hp;
 
-        this.maxEnergy = energy;
-        this.energy = energy;
-    }
-
-    public virtual void action1(MonsterPart[] targets)
-    {
-        foreach (var part in targets)
-        {
-            part.hp -= 0;
-        }
+        this.actions = actions;
     }
 }
