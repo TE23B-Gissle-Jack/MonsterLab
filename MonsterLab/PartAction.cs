@@ -4,9 +4,9 @@ namespace MonsterLab;
 
 public class PartAction
 {
-    string name;
+    public string name;
     int damage=0;
-    int heal=0;
+    int heal=0;// could prob be done with -damage
     int cost=0;
     int block = 0;
 
@@ -23,7 +23,12 @@ public class PartAction
     {
         self.energy-=cost;
 
-        
+        traget.attacked(tragetParts,damage,heal);
+        if (block>0)
+        {
+            self.blocking = true;
+            
+        }
 
         //return damage;
     }

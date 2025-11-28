@@ -6,32 +6,26 @@ namespace MonsterLab;
 public class Monster
 {
 
-    bool blocking = false;
-    MonsterPart blockingPart;
+    public bool blocking = false;
+    public MonsterPart blockingPart;
 
     int maxEnergy;
+    int power;
     public int energy
     {
         get
         {
-            return energy;
+            return power;
         }
         set
         {
-            energy = Math.Max(value, 0);
-            energy = Math.Min(value, maxEnergy);
+            power = Math.Max(value, 0);
+            power = Math.Min(value, maxEnergy);
         }
     }
 
-    public Head head;
 
-    public Arm leftArm;
-    public Arm rightArm;
-
-    public Torso torso;
-
-    public Leg leftLeg;
-    public Leg rightLeg;
+    Dictionary<string, MonsterPart> parts = new Dictionary<string, MonsterPart>();
 
 
 
@@ -39,8 +33,16 @@ public class Monster
     {
         get
         {
-            bool condition2 = leftArm.broken && rightArm.broken && leftLeg.broken && rightLeg.broken && head.broken;
-            if (torso.broken || condition2)
+            int count = 0;
+            foreach (var item in parts.Values)
+            {
+                if (item.broken)
+                {
+                    count++;
+                }
+            }
+            Console.WriteLine(parts["Head"].hp);
+            if (parts["Torso"].broken || count>=5)
             {
                 return false;
             }
@@ -54,50 +56,28 @@ public class Monster
 
     public Monster(Head head, Arm leftArm, Arm rightArm, Leg leftLeg, Leg rightLeg, Torso torso)
     {
-        this.head = head;
-        this.leftArm = leftArm;
-        this.rightArm = rightArm;
-        this.leftLeg = leftLeg;
-        this.rightLeg = rightLeg;
-        this.torso = torso;
+        parts.Add("Head", head);
+        parts.Add("LeftArm", leftArm);
+        parts.Add("RightArm", rightArm);
+        parts.Add("RightLeg", rightLeg);
+        parts.Add("LeftLeg", leftLeg);
+        parts.Add("Torso", torso);
 
         maxEnergy = torso.energy;
         energy = torso.energy;
     }
 
-    public void attacked(string[] parts, int damage, int heal)
+    public void attacked(string[] targetedParts, int damage, int heal)
     {
         if (!blocking)
         {
-            if (parts.Contains("Head"))
+            foreach (string part in targetedParts)
             {
-                head.hp -= damage;
-                head.hp += heal;
-            }
-            if (parts.Contains("LeftLeg"))
-            {
-                leftLeg.hp -= damage;
-                leftLeg.hp += heal;
-            }
-            if (parts.Contains("RightLeg"))
-            {
-                rightLeg.hp -= damage;
-                rightLeg.hp += heal;
-            }
-            if (parts.Contains("LeftArm"))
-            {
-                leftArm.hp -= damage;
-                leftArm.hp += heal;
-            }
-            if (parts.Contains("RightArm"))
-            {
-                rightArm.hp -= damage;
-                rightArm.hp += heal;
-            }
-            if (parts.Contains("Torso"))
-            {
-                torso.hp -= damage;
-                torso.hp += heal;
+                if (parts.ContainsKey(part))
+                {
+                    parts[part].hp-=damage;
+                    Console.WriteLine("Boom! on the "+ part);
+                }
             }
         }
 

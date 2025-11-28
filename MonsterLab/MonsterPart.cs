@@ -8,27 +8,29 @@ public class MonsterPart
     int maxHp;
 
     int block = 0;
+    int health;
+
 
     public int hp
     {
         get
         {
-            return hp;
+            return health;
         }
         set
         {
-            hp = Math.Max(value, 0);
+            health = Math.Max(value, 0);
         }
     }
 
-    PartAction[] actions;
+    public PartAction[] actions;
 
     bool stunned;
     public bool broken
     {
         get
         {
-            if (hp>0)
+            if (health>0)
             {
                 return false;
             }
@@ -48,5 +50,10 @@ public class MonsterPart
         this.hp = hp;
 
         this.actions = actions;
+    }
+
+    public void Block(int dmg)
+    {
+        
     }
 }
