@@ -1,5 +1,7 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Numerics;
+using Raylib_cs;
 
 namespace MonsterLab;
 
@@ -8,6 +10,8 @@ public class Monster
 
     public bool blocking = false;
     public MonsterPart blockingPart;
+
+    Dictionary<string, MonsterPart> parts = new Dictionary<string, MonsterPart>();
 
     int maxEnergy;
     int power;
@@ -24,11 +28,6 @@ public class Monster
         }
     }
 
-
-    Dictionary<string, MonsterPart> parts = new Dictionary<string, MonsterPart>();
-
-
-
     public bool alive
     {
         get
@@ -41,7 +40,6 @@ public class Monster
                     count++;
                 }
             }
-            Console.WriteLine(parts["Head"].hp);
             if (parts["Torso"].broken || count>=5)
             {
                 return false;
@@ -75,11 +73,31 @@ public class Monster
             {
                 if (parts.ContainsKey(part))
                 {
-                    parts[part].hp-=damage;
-                    Console.WriteLine("Boom! on the "+ part);
+                    //Console.WriteLine("DMG : "+damage);
+                    parts[part].hp = parts[part].hp - damage;
+                    //Console.WriteLine("Boom! on the "+ part);
                 }
             }
         }
 
     }
+
+    public void DisplayCondition(Vector2 topLeft, float scale)//base height 210, base width 80
+    {
+        //+5 are gaps
+        //head
+        Raylib.DrawRectangleV(topLeft+new Vector2(25,0)*scale,new Vector2(50,50)*scale, parts["Head"].color);
+        //torso
+        Raylib.DrawRectangleV(topLeft+new Vector2(25,50+5)*scale,new Vector2(50,75)* scale, parts["Torso"].color);
+
+        //arms
+        Raylib.DrawRectangleV(topLeft+new Vector2(0,50+5)*scale,new Vector2(20,75)*scale, parts["LeftArm"].color);
+        Raylib.DrawRectangleV(topLeft+new Vector2(75+5,50+5)*scale,new Vector2(20,75)* scale, parts["RightArm"].color);
+
+        //legs
+        Raylib.DrawRectangleV(topLeft+new Vector2(20+5,130+5)*scale,new Vector2(20,75)* scale, parts["LeftLeg"].color);
+        Raylib.DrawRectangleV(topLeft+new Vector2(50+5,130+5)*scale,new Vector2(20,75)* scale, parts["RightLeg"].color);
+
+    }
+    
 }

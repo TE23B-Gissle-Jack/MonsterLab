@@ -1,17 +1,22 @@
 using System;
+using Raylib_cs;
 
 namespace MonsterLab;
 
 public class MonsterPart
 {
     string name;
-    int maxHp;
+    float maxHp;
 
     int block = 0;
-    int health;
+    float health;
+
+    bool stunned;
+
+    public PartAction[] actions;
 
 
-    public int hp
+    public float hp
     {
         get
         {
@@ -20,12 +25,10 @@ public class MonsterPart
         set
         {
             health = Math.Max(value, 0);
+            Console.WriteLine(health +" : "+ value);
         }
     }
 
-    public PartAction[] actions;
-
-    bool stunned;
     public bool broken
     {
         get
@@ -41,7 +44,26 @@ public class MonsterPart
            
         }
     }
+    public Color color
+    {
+        get
+        {
+            Console.WriteLine(health/maxHp);
+            if (broken)
+            {
+                return Color.DarkGray;
+            }
 
+            //Green at higer HP, red at lower. Becomes a trasition
+            float green = health/maxHp;
+            float red = 1-green;
+            return new Color((byte)(255*red),(byte)(255*green),(byte)0);
+        }
+        private set
+        {
+           
+        }
+    }
     public MonsterPart(string name, int hp, PartAction[] actions)
     {
         this.name = name;
@@ -52,7 +74,9 @@ public class MonsterPart
         this.actions = actions;
     }
 
-    public void Block(int dmg)
+    
+
+    public void Block(int dmg)//who tf knows
     {
         
     }

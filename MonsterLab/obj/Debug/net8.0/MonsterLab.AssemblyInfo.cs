@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MonsterLab")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d6f8103e1bcf7b70c01980d0d35051464c79e492")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+fb230fdaf8bbdaeaaca4dbab3529c309430b9477")]
 [assembly: System.Reflection.AssemblyProductAttribute("MonsterLab")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MonsterLab")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
