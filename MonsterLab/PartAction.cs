@@ -2,7 +2,7 @@ using System;
 
 namespace MonsterLab;
 
-public class PartAction
+public class PartAction : Something
 {
     public string name;
     int damage=0;
@@ -11,6 +11,9 @@ public class PartAction
     int block = 0;
 
     string[] tragetParts;
+
+    public Monster self;
+    public Monster oponent;
 
     public PartAction(string name, int[] properties, string[] targets)
     {
@@ -22,11 +25,11 @@ public class PartAction
         this.tragetParts = targets;
     }
 
-    public void Use(Monster self, Monster traget)
+    public override void Use()
     {
         self.energy-=cost;
 
-        traget.attacked(tragetParts,damage,heal);
+        oponent.attacked(tragetParts,damage);
         if (block>0)
         {
             self.blocking = true;

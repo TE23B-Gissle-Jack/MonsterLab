@@ -1,4 +1,5 @@
-﻿using MonsterLab;
+﻿using System.Numerics;
+using MonsterLab;
 using Raylib_cs;
 
 //makes the window called "Slap" with a target fps of 60
@@ -9,8 +10,8 @@ Raylib.SetExitKey(KeyboardKey.Null); //Disable ESC as exit key
 // Example actions just so the constructor works
 PartAction[] exampleActions = new PartAction[]
 {
-    new PartAction("Punch", [20,1,0,0],["Head","LeftArm","RightLeg"]),
-    new PartAction("Leg Sweep", [12,0,0,0],["RightLeg","LeftLeg"]),
+    new PartAction("Punch", [20,10,0,0],["Head","LeftArm","RightLeg"]),
+    new PartAction("Leg Sweep", [12,20,0,0],["RightLeg","LeftLeg"]),
     new PartAction("Bite",[15,45,0,0],["Head","Torso"]),
     new PartAction("Tail Whip",[10,20,0,5],["Torso","LeftLeg"]),
     new PartAction("Body Slam",[30,65,0,0],["Torso"]),
@@ -44,14 +45,17 @@ Monster wow = new Monster(head, leftArm, rightArm, leftLeg, rightLeg, torso);
 
 Monster en = new Monster(head, leftArm, rightArm, leftLeg, rightLeg, torso);
 
+wow.enemy = en;
 
-
-
-if (wow.alive)
-{
-    Console.WriteLine("Fail");
-}
-else Console.WriteLine("Great succses");
+Button myButton = new Button(
+    new Vector2(500, 500), // position
+    150,                   // width
+    70,                    // height
+    Color.Blue,            // button color
+    Color.White,           // text color
+    "Click Me",             // button text
+    wow.parts["Head"].actions[0]
+);
 
 while(!Raylib.WindowShouldClose())
 {
@@ -60,7 +64,12 @@ while(!Raylib.WindowShouldClose())
 
     wow.DisplayCondition(new(100,100),0.5f);
 
-    exampleActions[0].Use(en, wow);
+    en.DisplayCondition(new(500,100),0.5f);
+
+    //exampleActions[0].Use(en, wow);
+
+    myButton.draw();
+    myButton.Update();
 
     Raylib.EndDrawing();
 }

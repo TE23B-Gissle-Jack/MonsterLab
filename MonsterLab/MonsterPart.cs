@@ -14,6 +14,19 @@ public class MonsterPart
     bool stunned;
 
     public PartAction[] actions;
+    Monster parent;
+    public Monster owner
+    {
+        private get { return parent; }
+        set
+        {
+            parent = value;
+            foreach (PartAction action in actions)
+            {
+                action.self = parent;
+            }
+        }
+    }
 
 
     public float hp
@@ -25,7 +38,7 @@ public class MonsterPart
         set
         {
             health = Math.Max(value, 0);
-            Console.WriteLine(health +" : "+ value);
+            //Console.WriteLine(health +" : "+ value);
         }
     }
 
@@ -33,7 +46,7 @@ public class MonsterPart
     {
         get
         {
-            if (health>0)
+            if (health > 0)
             {
                 return false;
             }
@@ -41,27 +54,27 @@ public class MonsterPart
         }
         private set
         {
-           
+
         }
     }
     public Color color
     {
         get
         {
-            Console.WriteLine(health/maxHp);
+            //Console.WriteLine(health/maxHp);
             if (broken)
             {
                 return Color.DarkGray;
             }
 
             //Green at higer HP, red at lower. Becomes a trasition
-            float green = health/maxHp;
-            float red = 1-green;
-            return new Color((byte)(255*red),(byte)(255*green),(byte)0);
+            float green = health / maxHp;
+            float red = 1 - green;
+            return new Color((byte)(255 * red), (byte)(255 * green), (byte)0);
         }
         private set
         {
-           
+
         }
     }
     public MonsterPart(string name, int hp, PartAction[] actions)
@@ -74,10 +87,16 @@ public class MonsterPart
         this.actions = actions;
     }
 
-    
 
+    public void SetTarget(Monster enemy)
+    {
+        foreach (PartAction action in actions)
+        {
+            action.oponent = enemy;
+        }
+    }
     public void Block(int dmg)//who tf knows
     {
-        
+
     }
 }
