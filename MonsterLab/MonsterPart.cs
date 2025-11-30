@@ -8,7 +8,7 @@ public class MonsterPart
     string name;
     float maxHp;
 
-    int block = 0;
+    public float block = 0;
     float health;
 
     bool stunned;
@@ -23,7 +23,8 @@ public class MonsterPart
             parent = value;
             foreach (PartAction action in actions)
             {
-                action.self = parent;
+                action.owningMonster = parent;
+                action.parent = this;
             }
         }
     }
@@ -95,8 +96,9 @@ public class MonsterPart
             action.oponent = enemy;
         }
     }
-    public void Block(int dmg)//who tf knows
+    public void Block(int dmg, MonsterPart badie)//who tf knows
     {
-
+        hp-=dmg*(block/100);
+        badie.hp-=dmg*(1-block/100);
     }
 }

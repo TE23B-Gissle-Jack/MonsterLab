@@ -1,14 +1,31 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
+using System.Reflection.Metadata;
 using Raylib_cs;
 
 namespace MonsterLab;
 
 public class Monster
 {
+    string[] posibleNames = ["Jeff", "Mongore", "Lizard","Pizard","Sizard","Tizard","Mizard","Glopy","Slopy","Dropy","Devron","Quiche"];
+    string name;
 
-    public bool blocking = false;
+    public bool blocking
+    {
+        get
+        {
+            if (blockingPart!=null)
+            {
+                return true;
+            }
+            return false;
+        }
+        set
+        {
+            
+        }
+    }
     public MonsterPart blockingPart;
 
     public Dictionary<string, MonsterPart> parts = new Dictionary<string, MonsterPart>();
@@ -82,12 +99,14 @@ public class Monster
         {
             part.owner = this;
         }
+        //assigne Random Name, for resons
+        name = posibleNames[Random.Shared.Next(posibleNames.Length)];
 
         maxEnergy = torso.energy;
         energy = torso.energy;
     }
 
-    public void attacked(string[] targetedParts, int damage)
+    public void Attacked(string[] targetedParts, int damage, MonsterPart attakingPart)
     {
         if (!blocking)
         {
@@ -101,7 +120,19 @@ public class Monster
                 }
             }
         }
+        else 
+        {
+            Console.WriteLine(name+" B-B-B-Bloked");
+            blockingPart.Block(damage, attakingPart);
+            //do thing then
+            blockingPart = null;
+        }
 
+    }
+    // for retaliaton throug block
+    public void Attacked(MonsterPart target, int damage)
+    {
+        target.hp-=damage;
     }
 
     public void DisplayCondition(Vector2 topLeft, float scale)//base height 210, base width 80
@@ -120,6 +151,8 @@ public class Monster
         Raylib.DrawRectangleV(topLeft + new Vector2(20 + 5, 130 + 5) * scale, new Vector2(20, 75) * scale, parts["LeftLeg"].color);
         Raylib.DrawRectangleV(topLeft + new Vector2(50 + 5, 130 + 5) * scale, new Vector2(20, 75) * scale, parts["RightLeg"].color);
 
+
+        Raylib.DrawText(name, (int)topLeft.X, (int)topLeft.Y, 20, Color.White);
     }
 
 }

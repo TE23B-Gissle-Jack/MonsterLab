@@ -5,35 +5,40 @@ namespace MonsterLab;
 public class PartAction : Something
 {
     public string name;
-    int damage=0;
-    int heal=0;// could prob be done with -damage
-    int cost;
-    int block = 0;
+
+    public Dictionary<string, int> properties = new Dictionary<string, int>();
 
     string[] tragetParts;
 
-    public Monster self;
+    public Monster owningMonster;
+    public MonsterPart parent;
     public Monster oponent;
 
     public PartAction(string name, int[] properties, string[] targets)
     {
         this.name = name;
-        this.cost = properties[0];
-        this.damage = properties[1];
-        this.heal = properties[2];
-        this.block = properties[3];
+        this.properties.Add("EnergyCost", properties[0]);
+        this.properties.Add("Damage", properties[1]);
+        this.properties.Add("Heal", properties[2]);
+        this.properties.Add("Block", properties[3]);
         this.tragetParts = targets;
+    }
+    public PartAction(PartAction refrance)
+    {
+        this.name = refrance.name;
+        this.properties = refrance.properties;
+        this.tragetParts = refrance.tragetParts;
     }
 
     public override void Use()
     {
-        self.energy-=cost;
+        owningMonster.energy -= properties["EnergyCost"];
 
-        oponent.attacked(tragetParts,damage);
-        if (block>0)
+        oponent.Attacked(tragetParts, properties["Damage"], parent);
+        if (properties["Block"] > 0)
         {
-            self.blocking = true;
-            
+            owningMonster.blockingPart = parent;
+            parent.block = properties["Block"];
         }
 
         //return damage;
