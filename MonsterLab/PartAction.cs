@@ -2,7 +2,7 @@ using System;
 
 namespace MonsterLab;
 
-public class PartAction : Something
+public class PartAction : Trigger
 {
     public string name;
 

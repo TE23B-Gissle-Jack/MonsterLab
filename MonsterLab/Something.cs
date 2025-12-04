@@ -2,7 +2,7 @@ using System;
 
 namespace MonsterLab;
 
-public class Something
+public class Trigger
 {
     public virtual void Use()
     {

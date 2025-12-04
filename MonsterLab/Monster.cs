@@ -8,14 +8,14 @@ namespace MonsterLab;
 
 public class Monster
 {
-    string[] posibleNames = ["Jeff", "Mongore", "Lizard","Pizard","Sizard","Tizard","Mizard","Glopy","Slopy","Dropy","Devron","Quiche","<kuraam Bat"];
+    string[] posibleNames = ["Jeff", "Mongore", "Lizard", "Pizard", "Sizard", "Tizard", "Mizard", "Glopy", "Slopy", "Dropy", "Devron", "Quiche", "<kuraam Bat"];
     string name;
 
     public bool blocking
     {
         get
         {
-            if (blockingPart!=null)
+            if (blockingPart != null)
             {
                 return true;
             }
@@ -23,7 +23,7 @@ public class Monster
         }
         set
         {
-            
+
         }
     }
     public MonsterPart blockingPart;
@@ -120,9 +120,9 @@ public class Monster
                 }
             }
         }
-        else 
+        else
         {
-            Console.WriteLine(name+" B-B-B-Bloked");
+            Console.WriteLine(name + " B-B-B-Bloked");
             blockingPart.Block(damage, attakingPart);
             //do thing then
             blockingPart = null;
@@ -132,27 +132,58 @@ public class Monster
     // for retaliaton throug block
     public void Attacked(MonsterPart target, int damage)
     {
-        target.hp-=damage;
+        target.hp -= damage;
     }
 
     public void DisplayCondition(Vector2 topLeft, float scale)//base height 210, base width 80
     {
         //+5 are gaps
         //head
-        Raylib.DrawRectangleV(topLeft + new Vector2(25, 0) * scale, new Vector2(50, 50) * scale, parts["Head"].color);
+        Vector2 headPos = topLeft + new Vector2(25, 0) * scale;
+        Vector2 headSize = new Vector2(50, 50) * scale;
+        HoverBox(headPos, headSize, parts["Head"].color, IsMouseOver(headPos, headSize));
+
         //torso
-        Raylib.DrawRectangleV(topLeft + new Vector2(25, 50 + 5) * scale, new Vector2(50, 75) * scale, parts["Torso"].color);
+        Vector2 torsoPos = topLeft + new Vector2(25, 50 + 5) * scale;
+        Vector2 torsoSize = new Vector2(50, 75) * scale;
+        HoverBox(torsoPos, torsoSize, parts["Torso"].color, IsMouseOver(torsoPos, torsoSize));
 
-        //arms
-        Raylib.DrawRectangleV(topLeft + new Vector2(0, 50 + 5) * scale, new Vector2(20, 75) * scale, parts["LeftArm"].color);
-        Raylib.DrawRectangleV(topLeft + new Vector2(75 + 5, 50 + 5) * scale, new Vector2(20, 75) * scale, parts["RightArm"].color);
+        // Left Arm
+        Vector2 leftArmPos = topLeft + new Vector2(0, 50 + 5) * scale;
+        Vector2 leftArmSize = new Vector2(20, 75) * scale;
+        HoverBox(leftArmPos, leftArmSize, parts["LeftArm"].color, IsMouseOver(leftArmPos, leftArmSize));
 
-        //legs
-        Raylib.DrawRectangleV(topLeft + new Vector2(20 + 5, 130 + 5) * scale, new Vector2(20, 75) * scale, parts["LeftLeg"].color);
-        Raylib.DrawRectangleV(topLeft + new Vector2(50 + 5, 130 + 5) * scale, new Vector2(20, 75) * scale, parts["RightLeg"].color);
+        //right Arm
+        Vector2 rightArmPos = topLeft + new Vector2(75 + 5, 50 + 5) * scale;
+        Vector2 rightArmSize = new Vector2(20, 75) * scale;
+        HoverBox(rightArmPos, rightArmSize, parts["RightArm"].color, IsMouseOver(rightArmPos, rightArmSize));
+
+        //left Leg
+        Vector2 leftLegPos = topLeft + new Vector2(20 + 5, 130 + 5) * scale;
+        Vector2 leftLegSize = new Vector2(20, 75) * scale;
+        HoverBox(leftLegPos, leftLegSize, parts["LeftLeg"].color, IsMouseOver(leftLegPos, leftLegSize));
+
+        //right Leg
+        Vector2 rightLegPos = topLeft + new Vector2(50 + 5, 130 + 5) * scale;
+        Vector2 rightLegSize = new Vector2(20, 75) * scale;
+        HoverBox(rightLegPos, rightLegSize, parts["RightLeg"].color, IsMouseOver(rightLegPos, rightLegSize));
 
 
         Raylib.DrawText(name, (int)topLeft.X, (int)topLeft.Y, 20, Color.White);
+    }
+    void HoverBox(Vector2 position, Vector2 size, Color color, bool condition)
+    {
+        if (condition)
+        {
+            Raylib.DrawRectangleV(position - new Vector2(1, 1), size + new Vector2(2, 2), Color.White);
+        }
+
+        Raylib.DrawRectangleV(position, size, color);
+    }
+    bool IsMouseOver(Vector2 position, Vector2 size)
+    {
+        //checks if mouse is inside a box
+        return Raylib.GetMouseX() > position.X && Raylib.GetMouseX() < position.X + size.X && Raylib.GetMouseY() > position.Y && Raylib.GetMouseY() < position.Y + size.Y;
     }
 
 }

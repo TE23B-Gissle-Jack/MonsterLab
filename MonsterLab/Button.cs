@@ -20,9 +20,9 @@ public class Button
 
     bool hover = false;
 
-    Something theThing;
+    Trigger theThing;
 
-    public Button(Vector2 location, int width, int height, Color buttonColor, Color textColor, string text, Something theThing)
+    public Button(Vector2 location, int width, int height, Color buttonColor, Color textColor, string text, Trigger theThing)
     {
         this.position = location;
         this.width = width;
