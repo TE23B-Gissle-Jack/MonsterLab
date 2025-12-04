@@ -33,17 +33,6 @@ PartAction[] RandomActions()
 }
 
 
-// Create instances
-// Arm rightArm = new Arm("Arm", 50, RandomActions());
-// Arm leftArm = new Arm("Arm", 50, RandomActions());
-// Head head = new Head("Head", 100, RandomActions());
-// Leg rightLeg = new Leg("Leg", 60, RandomActions());
-// Leg leftLeg = new Leg("Leg", 60, RandomActions());
-// Torso torso = new Torso("Torso", 120, RandomActions(), 100);
-// Monster wow = new Monster(head, leftArm, rightArm, leftLeg, rightLeg, torso);
-
-// Monster en = new Monster(head, leftArm, rightArm, leftLeg, rightLeg, torso);
-
 Monster CreateMonster()
 {
     Arm rightArm = new Arm("Arm", 50, RandomActions());
@@ -56,6 +45,7 @@ Monster CreateMonster()
 }
 
 Monster wow = CreateMonster();
+
 Monster en = CreateMonster();
 
 wow.enemy = en;

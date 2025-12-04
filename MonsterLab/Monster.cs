@@ -8,7 +8,7 @@ namespace MonsterLab;
 
 public class Monster
 {
-    string[] posibleNames = ["Jeff", "Mongore", "Lizard","Pizard","Sizard","Tizard","Mizard","Glopy","Slopy","Dropy","Devron","Quiche"];
+    string[] posibleNames = ["Jeff", "Mongore", "Lizard","Pizard","Sizard","Tizard","Mizard","Glopy","Slopy","Dropy","Devron","Quiche","<kuraam Bat"];
     string name;
 
     public bool blocking
