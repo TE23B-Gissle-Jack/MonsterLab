@@ -27,8 +27,7 @@ PartAction[] RandomActions()
 {
     PartAction[] something = new PartAction[]{
     new PartAction(exampleActions[Random.Shared.Next(exampleActions.Length)]),
-    new PartAction(exampleActions[exampleActions.Length-1])//[Random.Shared.Next(exampleActions.Length)];
-    };
+    new PartAction(exampleActions[Random.Shared.Next(exampleActions.Length)])};
     return something;
 }
 
@@ -48,67 +47,29 @@ Monster wow = CreateMonster();
 
 Monster en = CreateMonster();
 
-wow.enemy = en;
-en.enemy = wow;
+wow.Enemy = en;
+en.Enemy = wow;
 
-Button myButton = new Button(
-    new Vector2(500, 500), // position
-    150,                   // width
-    70,                    // height
-    Color.Blue,            // button color
-    Color.White,           // text color
-    wow.parts["Head"].actions[0].name,             // button text
-    wow.parts["Head"].actions[0]
-);
-Button myButton2 = new Button(
-    new Vector2(700, 500), // position
-    150,                   // width
-    70,                    // height
-    Color.Blue,            // button color
-    Color.White,           // text color
-    wow.parts["Head"].actions[1].name,             // button text
-    wow.parts["Head"].actions[1]
-);
-
-Button myButton3 = new Button(
-    new Vector2(500, 700), // position
-    150,                   // width
-    70,                    // height
-    Color.Red,            // button color
-    Color.White,           // text color
-    en.parts["Head"].actions[0].name,             // button text
-    en.parts["Head"].actions[0]
-);
-Button myButton4 = new Button(
-    new Vector2(700, 700), // position
-    150,                   // width
-    70,                    // height
-    Color.Red,            // button color
-    Color.White,           // text color
-    en.parts["Head"].actions[1].name,             // button text
-    en.parts["Head"].actions[1]
-);
 
 while (!Raylib.WindowShouldClose())
 {
     Raylib.ClearBackground(Color.Black);
     Raylib.BeginDrawing();
 
-    wow.DisplayCondition(new(100, 100), 0.5f);
+    wow.DisplayCondition(new(100, 100), 0.7f);
 
-    en.DisplayCondition(new(500, 100), 0.5f);
+    en.DisplayCondition(new(500, 100), 0.7f);
 
-    //exampleActions[0].Use(en, wow);
-
-    myButton.draw();
-    myButton.Update();
-    myButton2.draw();
-    myButton2.Update();
-
-    myButton3.draw();
-    myButton3.Update();
-    myButton4.draw();
-    myButton4.Update();
+    for (int i = 0; i < wow.ActionsButtons.Count; i++)
+    {
+        wow.ActionsButtons[i].draw(new(500+200*i,500));
+        wow.ActionsButtons[i].Update(new(500+200*i,500));
+    }
+    for (int i = 0; i < en.ActionsButtons.Count; i++)
+    {
+        en.ActionsButtons[i].draw(new(500+200*i,600));
+        en.ActionsButtons[i].Update(new(500+200*i,600));
+    }
 
     Raylib.EndDrawing();
 }

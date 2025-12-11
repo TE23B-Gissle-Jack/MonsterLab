@@ -32,7 +32,7 @@ public class PartAction : Trigger
 
     public override void Use()
     {
-        owningMonster.energy -= properties["EnergyCost"];
+        owningMonster.Energy -= properties["EnergyCost"];
 
         oponent.Attacked(tragetParts, properties["Damage"], parent);
         if (properties["Block"] > 0)

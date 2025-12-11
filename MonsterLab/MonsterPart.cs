@@ -1,4 +1,5 @@
 using System;
+using System.Numerics;
 using Raylib_cs;
 
 namespace MonsterLab;
@@ -14,6 +15,9 @@ public class MonsterPart
     bool stunned;
 
     public PartAction[] actions;
+    public List<Button> actionsButtons = new List<Button>();
+
+
     Monster parent;
     public Monster owner
     {
@@ -78,6 +82,8 @@ public class MonsterPart
 
         }
     }
+
+    //Constructor
     public MonsterPart(string name, int hp, PartAction[] actions)
     {
         this.name = name;
@@ -86,6 +92,12 @@ public class MonsterPart
         this.hp = hp;
 
         this.actions = actions;
+
+        for (int i = 0; i < actions.Length; i++)
+        {
+            actionsButtons.Add(new Button(new Vector2(500 * (i + 1), 500), new(150, 70), Color.Blue, Color.White, this.actions[i].name, this.actions[i]));
+        }
+
     }
 
 
@@ -98,7 +110,7 @@ public class MonsterPart
     }
     public void Block(int dmg, MonsterPart badie)//who tf knows
     {
-        hp-=dmg*(block/100);
-        badie.hp-=dmg*(1-block/100);
+        hp -= dmg * (block / 100);
+        badie.hp -= dmg * (1 - block / 100);
     }
 }

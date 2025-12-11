@@ -8,25 +8,23 @@ public class Button
 {
     Vector2 position;
 
-    int width;
-    int height;
+    Vector2 size;
 
     Color color;
 
     string text;
     Color textColor;
 
-    int size = 40;
+    int fontSize = 40;
 
     bool hover = false;
 
     Trigger theThing;
 
-    public Button(Vector2 location, int width, int height, Color buttonColor, Color textColor, string text, Trigger theThing)
+    public Button(Vector2 location, Vector2 size, Color buttonColor, Color textColor, string text, Trigger theThing)
     {
         this.position = location;
-        this.width = width;
-        this.height = height;
+        this.size = size;
         this.color = buttonColor;
         this.textColor = textColor;
         this.text = text;
@@ -36,22 +34,62 @@ public class Button
     public void draw()
     {
 
-        while (Raylib.MeasureText(text, size) > width - 20)
+        while (Raylib.MeasureText(text, fontSize) > size.X - 20)
         {
-            size--;
+            fontSize--;
+            if (text =="")
+            {
+                break;
+            }
         }
 
-        int thingie = Raylib.MeasureText(text, size);
-        int middleX = (width - thingie)/2;
-        int middleY = (int)position.Y + (height / 4);
+        int thingie = Raylib.MeasureText(text, fontSize);
+        int middleX = ((int)size.X - thingie)/2;
+        int middleY = (int)position.Y + ((int)size.X / 8);
 
-        if (hover) Raylib.DrawRectangleV(position - new Vector2(2, 2), new(width + 4, height + 4), Color.White);
-        Raylib.DrawRectangleV(position, new(width, height), color);
-        Raylib.DrawText(text, (int)position.X+middleX, middleY, size, textColor);
+        if (hover) Raylib.DrawRectangleV(position - new Vector2(2, 2), size+new Vector2(4,4), Color.White);
+        Raylib.DrawRectangleV(position, size, color);
+        Raylib.DrawText(text, (int)position.X+middleX, middleY, fontSize, textColor);
     }
+
+    public void draw(Vector2 location)
+    {
+
+        while (Raylib.MeasureText(text, fontSize) > size.X - 20)
+        {
+            fontSize--;
+            if (text =="")
+            {
+                break;
+            }
+        }
+
+        int thingie = Raylib.MeasureText(text, fontSize);
+        int middleX = ((int)size.X - thingie)/2;
+        int middleY = (int)location.Y + ((int)size.X / 8);
+
+        if (hover) Raylib.DrawRectangleV(location - new Vector2(2, 2), size+new Vector2(4,4), Color.White);
+        Raylib.DrawRectangleV(location, size, color);
+        Raylib.DrawText(text, (int)location.X+middleX, middleY, fontSize, textColor);
+    }
+
+
     public void Update()
     {
-        bool isMouseOver = Raylib.GetMouseX() > position.X &&Raylib.GetMouseX() < position.X + width &&Raylib.GetMouseY() > position.Y &&Raylib.GetMouseY() < position.Y + height;
+        bool isMouseOver = Raylib.GetMouseX() > position.X &&Raylib.GetMouseX() < position.X + size.X &&Raylib.GetMouseY() > position.Y &&Raylib.GetMouseY() < position.Y + size.Y;
+        if (isMouseOver)
+        {
+            hover = true;
+            if (Raylib.IsMouseButtonPressed(MouseButton.Left))
+            {
+                Use();
+            }
+        }
+        else hover = false;
+    }
+    public void Update(Vector2 location)
+    {
+        bool isMouseOver = Raylib.GetMouseX() > location.X &&Raylib.GetMouseX() < location.X + size.X &&Raylib.GetMouseY() > location.Y &&Raylib.GetMouseY() < location.Y + size.Y;
         if (isMouseOver)
         {
             hover = true;

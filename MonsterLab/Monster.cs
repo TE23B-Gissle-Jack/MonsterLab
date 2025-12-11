@@ -30,8 +30,19 @@ public class Monster
 
     public Dictionary<string, MonsterPart> parts = new Dictionary<string, MonsterPart>();
 
+    string selectedBodypart = "Head";
+    public List<Button> ActionsButtons
+    {
+        get
+        {
+            return parts[selectedBodypart].actionsButtons;
+        }
+    }
+
+    
+
     Monster oponent;
-    public Monster enemy
+    public Monster Enemy
     {
         get
         {
@@ -49,7 +60,7 @@ public class Monster
 
     int maxEnergy;
     int power;
-    public int energy
+    public int Energy
     {
         get
         {
@@ -62,7 +73,7 @@ public class Monster
         }
     }
 
-    public bool alive
+    public bool Alive
     {
         get
         {
@@ -103,7 +114,7 @@ public class Monster
         name = posibleNames[Random.Shared.Next(posibleNames.Length)];
 
         maxEnergy = torso.energy;
-        energy = torso.energy;
+        Energy = torso.energy;
     }
 
     public void Attacked(string[] targetedParts, int damage, MonsterPart attakingPart)
@@ -137,53 +148,67 @@ public class Monster
 
     public void DisplayCondition(Vector2 topLeft, float scale)//base height 210, base width 80
     {
+        //using AI to write the simmilar/repetavive lines, might look od in comits.
         //+5 are gaps
         //head
         Vector2 headPos = topLeft + new Vector2(25, 0) * scale;
         Vector2 headSize = new Vector2(50, 50) * scale;
-        HoverBox(headPos, headSize, parts["Head"].color, IsMouseOver(headPos, headSize));
+        Button head = new Button(headPos, headSize, parts["Head"].color, Color.Red, "", new SelectBodypart("Head", this));
+        head.Update();
+        head.draw();
 
         //torso
         Vector2 torsoPos = topLeft + new Vector2(25, 50 + 5) * scale;
         Vector2 torsoSize = new Vector2(50, 75) * scale;
-        HoverBox(torsoPos, torsoSize, parts["Torso"].color, IsMouseOver(torsoPos, torsoSize));
+        Button torso = new Button(torsoPos, torsoSize, parts["Torso"].color, Color.Red, "", new SelectBodypart("Torso", this));
+        torso.Update();
+        torso.draw();
 
-        // Left Arm
+        //left arm
         Vector2 leftArmPos = topLeft + new Vector2(0, 50 + 5) * scale;
         Vector2 leftArmSize = new Vector2(20, 75) * scale;
-        HoverBox(leftArmPos, leftArmSize, parts["LeftArm"].color, IsMouseOver(leftArmPos, leftArmSize));
+        Button leftArm = new Button(leftArmPos, leftArmSize, parts["LeftArm"].color, Color.Red, "", new SelectBodypart("LeftArm", this));
+        leftArm.Update();
+        leftArm.draw();
 
-        //right Arm
+        //right arm
         Vector2 rightArmPos = topLeft + new Vector2(75 + 5, 50 + 5) * scale;
         Vector2 rightArmSize = new Vector2(20, 75) * scale;
-        HoverBox(rightArmPos, rightArmSize, parts["RightArm"].color, IsMouseOver(rightArmPos, rightArmSize));
+        Button rightArm = new Button(rightArmPos, rightArmSize, parts["RightArm"].color, Color.Red, "", new SelectBodypart("RightArm", this));
+        rightArm.Update();
+        rightArm.draw();
 
-        //left Leg
+        //left leg
         Vector2 leftLegPos = topLeft + new Vector2(20 + 5, 130 + 5) * scale;
         Vector2 leftLegSize = new Vector2(20, 75) * scale;
-        HoverBox(leftLegPos, leftLegSize, parts["LeftLeg"].color, IsMouseOver(leftLegPos, leftLegSize));
+        Button leftLeg = new Button(leftLegPos, leftLegSize, parts["LeftLeg"].color, Color.Red, "", new SelectBodypart("LeftLeg", this));
+        leftLeg.Update();
+        leftLeg.draw();
 
-        //right Leg
+        //right leg
         Vector2 rightLegPos = topLeft + new Vector2(50 + 5, 130 + 5) * scale;
         Vector2 rightLegSize = new Vector2(20, 75) * scale;
-        HoverBox(rightLegPos, rightLegSize, parts["RightLeg"].color, IsMouseOver(rightLegPos, rightLegSize));
+        Button rightLeg = new Button(rightLegPos, rightLegSize, parts["RightLeg"].color, Color.Red, "", new SelectBodypart("RightLeg", this));
+        rightLeg.Update();
+        rightLeg.draw();
 
 
         Raylib.DrawText(name, (int)topLeft.X, (int)topLeft.Y, 20, Color.White);
     }
-    void HoverBox(Vector2 position, Vector2 size, Color color, bool condition)
+    public class SelectBodypart : Trigger
     {
-        if (condition)
+        string part;
+        Monster target;
+        public SelectBodypart(string part, Monster target)
         {
-            Raylib.DrawRectangleV(position - new Vector2(1, 1), size + new Vector2(2, 2), Color.White);
+            this.part = part;
+            this.target = target;
         }
 
-        Raylib.DrawRectangleV(position, size, color);
+        public override void Use()
+        {
+            target.selectedBodypart = part;
+            Console.WriteLine("Select");
+        }
     }
-    bool IsMouseOver(Vector2 position, Vector2 size)
-    {
-        //checks if mouse is inside a box
-        return Raylib.GetMouseX() > position.X && Raylib.GetMouseX() < position.X + size.X && Raylib.GetMouseY() > position.Y && Raylib.GetMouseY() < position.Y + size.Y;
-    }
-
 }
