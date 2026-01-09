@@ -11,6 +11,7 @@ public class Button
     Vector2 size;
 
     Color color;
+    Color blockedColor = Color.Gray;
 
     string text;
     Color textColor;
@@ -18,6 +19,7 @@ public class Button
     int fontSize = 40;
 
     bool hover = false;
+    public bool blocked = false;//aaaahhhhh
 
     Trigger theThing;
 
@@ -54,6 +56,8 @@ public class Button
 
     public void draw(Vector2 location)
     {
+        Color colour = color;
+        if(blocked)colour=blockedColor;
 
         while (Raylib.MeasureText(text, fontSize) > size.X - 20)
         {
@@ -69,40 +73,43 @@ public class Button
         int middleY = (int)location.Y + ((int)size.X / 8);
 
         if (hover) Raylib.DrawRectangleV(location - new Vector2(2, 2), size+new Vector2(4,4), Color.White);
-        Raylib.DrawRectangleV(location, size, color);
+        Raylib.DrawRectangleV(location, size, colour);
         Raylib.DrawText(text, (int)location.X+middleX, middleY, fontSize, textColor);
     }
 
 
-    public void Update()
+    public bool Update()
     {
         bool isMouseOver = Raylib.GetMouseX() > position.X &&Raylib.GetMouseX() < position.X + size.X &&Raylib.GetMouseY() > position.Y &&Raylib.GetMouseY() < position.Y + size.Y;
         if (isMouseOver)
         {
             hover = true;
-            if (Raylib.IsMouseButtonPressed(MouseButton.Left))
+            if (Raylib.IsMouseButtonPressed(MouseButton.Left)&&!blocked)
             {
-                Use();
+                return Use();
             }
         }
         else hover = false;
+        return false;
     }
-    public void Update(Vector2 location)
+    public bool Update(Vector2 location)
     {
         bool isMouseOver = Raylib.GetMouseX() > location.X &&Raylib.GetMouseX() < location.X + size.X &&Raylib.GetMouseY() > location.Y &&Raylib.GetMouseY() < location.Y + size.Y;
         if (isMouseOver)
         {
             hover = true;
-            if (Raylib.IsMouseButtonPressed(MouseButton.Left))
+            if (Raylib.IsMouseButtonPressed(MouseButton.Left)&&!blocked)
             {
-                Use();
+                return Use();
             }
         }
         else hover = false;
+        return false;
     }
-    void Use()
+    bool Use()
     {
         theThing.Use();
         Console.WriteLine("use");
+        return true;
     }
 }

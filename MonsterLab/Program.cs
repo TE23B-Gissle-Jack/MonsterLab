@@ -71,6 +71,8 @@ while (!Raylib.WindowShouldClose())
         en.ActionsButtons[i].Update(new(500+200*i,600));
     }
 
+    Console.WriteLine(wow.Alive);
+
     Raylib.EndDrawing();
 }
 Console.ReadLine();

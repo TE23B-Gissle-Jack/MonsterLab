@@ -10,7 +10,7 @@ public class PartAction : Trigger
 
     string[] tragetParts;
 
-    public Monster owningMonster;
+    public Monster owningMonster;//hhhmmmmm
     public MonsterPart parent;
     public Monster oponent;
 
@@ -30,17 +30,20 @@ public class PartAction : Trigger
         this.tragetParts = refrance.tragetParts;
     }
 
-    public override void Use()
+    public override bool Use()
     {
-        owningMonster.Energy -= properties["EnergyCost"];
-
-        oponent.Attacked(tragetParts, properties["Damage"], parent);
-        if (properties["Block"] > 0)
+        if (owningMonster.Energy < properties["EnergyCost"])
         {
-            owningMonster.blockingPart = parent;
-            parent.block = properties["Block"];
-        }
+            owningMonster.Energy -= properties["EnergyCost"];
 
-        //return damage;
+            oponent.Attacked(tragetParts, properties["Damage"], parent);
+            if (properties["Block"] > 0)
+            {
+                owningMonster.blockingPart = parent;
+                parent.block = properties["Block"];
+            }
+            return true;
+        }
+        else return false;
     }
 }

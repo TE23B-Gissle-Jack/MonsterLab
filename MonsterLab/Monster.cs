@@ -35,11 +35,18 @@ public class Monster
     {
         get
         {
+            if (parts[selectedBodypart].Broken)
+            {
+                foreach (Button button in parts[selectedBodypart].actionsButtons)
+                {
+                    button.blocked = true;
+                }
+            }
             return parts[selectedBodypart].actionsButtons;
         }
     }
 
-    
+
 
     Monster oponent;
     public Monster Enemy
@@ -80,12 +87,12 @@ public class Monster
             int count = 0;
             foreach (var item in parts.Values)
             {
-                if (item.broken)
+                if (item.Broken)
                 {
                     count++;
                 }
             }
-            if (parts["Torso"].broken || count >= 5)
+            if (parts["Torso"].Broken || count >= 5)
             {
                 return false;
             }
@@ -126,7 +133,7 @@ public class Monster
                 if (parts.ContainsKey(part))
                 {
                     //Console.WriteLine("DMG : "+damage);
-                    parts[part].hp = parts[part].hp - damage;
+                    parts[part].Hp = parts[part].Hp - damage;
                     //Console.WriteLine("Boom! on the "+ part);
                 }
             }
@@ -138,12 +145,20 @@ public class Monster
             //do thing then
             blockingPart = null;
         }
+        if (!Alive)
+        {
+            foreach (string key in parts.Keys)
+            {
+                Console.WriteLine($"{key}: {parts[key]}");
+                parts[key].Hp = 0;
+            }
+        }
 
     }
     // for retaliaton throug block
     public void Attacked(MonsterPart target, int damage)
     {
-        target.hp -= damage;
+        target.Hp -= damage;
     }
 
     public void DisplayCondition(Vector2 topLeft, float scale)//base height 210, base width 80
@@ -193,7 +208,7 @@ public class Monster
         rightLeg.draw();
 
 
-        Raylib.DrawText(name, (int)topLeft.X, (int)topLeft.Y, 20, Color.White);
+        Raylib.DrawText(name, (int)topLeft.X, (int)topLeft.Y-20, 20, Color.White);
     }
     public class SelectBodypart : Trigger
     {
@@ -205,10 +220,11 @@ public class Monster
             this.target = target;
         }
 
-        public override void Use()
+        public override bool Use()
         {
             target.selectedBodypart = part;
             Console.WriteLine("Select");
+            return true;//succes
         }
     }
 }

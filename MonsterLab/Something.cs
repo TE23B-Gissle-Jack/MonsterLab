@@ -4,8 +4,8 @@ namespace MonsterLab;
 
 public class Trigger
 {
-    public virtual void Use()
+    public virtual bool Use()
     {
-        
+        return true;
     }
 }

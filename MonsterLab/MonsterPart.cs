@@ -34,7 +34,7 @@ public class MonsterPart
     }
 
 
-    public float hp
+    public float Hp
     {
         get
         {
@@ -47,7 +47,7 @@ public class MonsterPart
         }
     }
 
-    public bool broken
+    public bool Broken
     {
         get
         {
@@ -62,12 +62,13 @@ public class MonsterPart
 
         }
     }
+    
     public Color color
     {
         get
         {
             //Console.WriteLine(health/maxHp);
-            if (broken)
+            if (Broken)
             {
                 return Color.DarkGray;
             }
@@ -89,7 +90,7 @@ public class MonsterPart
         this.name = name;
 
         this.maxHp = hp;
-        this.hp = hp;
+        this.Hp = hp;
 
         this.actions = actions;
 
@@ -110,7 +111,7 @@ public class MonsterPart
     }
     public void Block(int dmg, MonsterPart badie)//who tf knows
     {
-        hp -= dmg * (block / 100);
-        badie.hp -= dmg * (1 - block / 100);
+        Hp -= dmg * (block / 100);
+        badie.Hp -= dmg * (1 - block / 100);
     }
 }
