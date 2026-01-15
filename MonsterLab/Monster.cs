@@ -10,6 +10,10 @@ public class Monster
 {
     string[] posibleNames = ["Jeff", "Mongore", "Lizard", "Pizard", "Sizard", "Tizard", "Mizard", "Glopy", "Slopy", "Dropy", "Devron", "Quiche", "<kuraam Bat"];
     string name;
+    public List<Button>bodyButtons = new List<Button>();
+    //public Dictionary<string, Button> bodyButtons = new Dictionary<string, Button>();
+    private Vector2 displayPosition = new(0,0);//fuck ass
+    public float size = 1;
 
     public bool blocking
     {
@@ -44,6 +48,7 @@ public class Monster
             }
             return parts[selectedBodypart].actionsButtons;
         }
+        private set{}
     }
 
 
@@ -165,50 +170,69 @@ public class Monster
     {
         //using AI to write the simmilar/repetavive lines, might look od in comits.
         //+5 are gaps
+
+        //draws all bodyparts
+        foreach(Button button in bodyButtons) button.draw();
+
+
+        //updates all sizes and position of bodyparts  // will never be used and is dumb
         //head
         Vector2 headPos = topLeft + new Vector2(25, 0) * scale;
         Vector2 headSize = new Vector2(50, 50) * scale;
-        Button head = new Button(headPos, headSize, parts["Head"].color, Color.Red, "", new SelectBodypart("Head", this));
-        head.Update();
-        head.draw();
+        bodyButtons.Add(new Button(headPos, headSize, parts["Head"].color, Color.Red, "", new SelectBodypart("Head", this)));
 
         //torso
         Vector2 torsoPos = topLeft + new Vector2(25, 50 + 5) * scale;
         Vector2 torsoSize = new Vector2(50, 75) * scale;
-        Button torso = new Button(torsoPos, torsoSize, parts["Torso"].color, Color.Red, "", new SelectBodypart("Torso", this));
-        torso.Update();
-        torso.draw();
+        bodyButtons.Add(new Button(torsoPos, torsoSize, parts["Torso"].color, Color.Red, "", new SelectBodypart("Torso", this)));
+        
 
         //left arm
         Vector2 leftArmPos = topLeft + new Vector2(0, 50 + 5) * scale;
         Vector2 leftArmSize = new Vector2(20, 75) * scale;
-        Button leftArm = new Button(leftArmPos, leftArmSize, parts["LeftArm"].color, Color.Red, "", new SelectBodypart("LeftArm", this));
-        leftArm.Update();
-        leftArm.draw();
+        bodyButtons.Add(new Button(leftArmPos, leftArmSize, parts["LeftArm"].color, Color.Red, "", new SelectBodypart("LeftArm", this)));
+        
 
         //right arm
         Vector2 rightArmPos = topLeft + new Vector2(75 + 5, 50 + 5) * scale;
         Vector2 rightArmSize = new Vector2(20, 75) * scale;
-        Button rightArm = new Button(rightArmPos, rightArmSize, parts["RightArm"].color, Color.Red, "", new SelectBodypart("RightArm", this));
-        rightArm.Update();
-        rightArm.draw();
+        bodyButtons.Add(new Button(rightArmPos, rightArmSize, parts["RightArm"].color, Color.Red, "", new SelectBodypart("RightArm", this)));
+        
 
         //left leg
         Vector2 leftLegPos = topLeft + new Vector2(20 + 5, 130 + 5) * scale;
         Vector2 leftLegSize = new Vector2(20, 75) * scale;
-        Button leftLeg = new Button(leftLegPos, leftLegSize, parts["LeftLeg"].color, Color.Red, "", new SelectBodypart("LeftLeg", this));
-        leftLeg.Update();
-        leftLeg.draw();
+        bodyButtons.Add(new Button(leftLegPos, leftLegSize, parts["LeftLeg"].color, Color.Red, "", new SelectBodypart("LeftLeg", this)));
+        
 
         //right leg
         Vector2 rightLegPos = topLeft + new Vector2(50 + 5, 130 + 5) * scale;
         Vector2 rightLegSize = new Vector2(20, 75) * scale;
-        Button rightLeg = new Button(rightLegPos, rightLegSize, parts["RightLeg"].color, Color.Red, "", new SelectBodypart("RightLeg", this));
-        rightLeg.Update();
-        rightLeg.draw();
+        bodyButtons.Add(new Button(rightLegPos, rightLegSize, parts["RightLeg"].color, Color.Red, "", new SelectBodypart("RightLeg", this)));
+        
 
 
-        Raylib.DrawText(name, (int)topLeft.X, (int)topLeft.Y-20, 20, Color.White);
+        Raylib.DrawText(name, (int)topLeft.X, (int)topLeft.Y - 20, 20, Color.White);
+    }
+    public Monster MyTurn(Monster yeah)
+    {
+        //check if it is this monsters turn
+        if (yeah == this)
+        {
+            Console.WriteLine(name);
+            //draw all action buttons for selected part
+            for (int i = 0; i < this.ActionsButtons.Count; i++)
+            {
+                this.ActionsButtons[i].draw(new(500 + 200 * i, 500));
+                foreach (Button button in bodyButtons) button.Update();
+                //if the button is pressed and is succesfully exiquted switch to opponents turn.
+                if (this.ActionsButtons[i].Update(new(500 + 200 * i, 500))) return oponent;
+            }
+            //keep itself as current action taker
+            return this;
+        }
+        //doesnt do anything
+        return yeah;
     }
     public class SelectBodypart : Trigger
     {

@@ -6,7 +6,7 @@ public class PartAction : Trigger
 {
     public string name;
 
-    public Dictionary<string, int> properties = new Dictionary<string, int>();
+    private Dictionary<string, int> properties = new Dictionary<string, int>();
 
     string[] tragetParts;
 
@@ -32,7 +32,10 @@ public class PartAction : Trigger
 
     public override bool Use()
     {
-        if (owningMonster.Energy < properties["EnergyCost"])
+        bool fan = owningMonster.Energy < properties["EnergyCost"];
+        Console.WriteLine(owningMonster.Energy+" >= "+ properties["EnergyCost"]+" : "+ fan);
+
+        if (owningMonster.Energy >= properties["EnergyCost"])
         {
             owningMonster.Energy -= properties["EnergyCost"];
 

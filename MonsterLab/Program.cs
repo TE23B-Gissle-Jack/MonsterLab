@@ -23,6 +23,7 @@ PartAction[] exampleActions = new PartAction[]
     new PartAction("Guard",[5,0,0,40],["Torso","Head"])
 };
 
+//temp
 PartAction[] RandomActions()
 {
     PartAction[] something = new PartAction[]{
@@ -31,26 +32,30 @@ PartAction[] RandomActions()
     return something;
 }
 
-
+//makes a random monster
 Monster CreateMonster()
 {
     Arm rightArm = new Arm("Arm", 50, RandomActions());
     Arm leftArm = new Arm("Arm", 50, RandomActions());
-    Head head = new Head("Head", 100, RandomActions());
+    Head head = new Head("Head", 900, RandomActions());
     Leg rightLeg = new Leg("Leg", 60, RandomActions());
     Leg leftLeg = new Leg("Leg", 60, RandomActions());
     Torso torso = new Torso("Torso", 120, RandomActions(), 100);
-    return new Monster(head,leftArm,rightArm,leftLeg,rightLeg,torso);
+    return new Monster(head, leftArm, rightArm, leftLeg, rightLeg, torso);
 }
 
+//temp
 Monster wow = CreateMonster();
 
 Monster en = CreateMonster();
 
 wow.Enemy = en;
 en.Enemy = wow;
+//////
+Monster currentMonstersTurn = wow;
 
 
+//the loop 👌
 while (!Raylib.WindowShouldClose())
 {
     Raylib.ClearBackground(Color.Black);
@@ -60,18 +65,8 @@ while (!Raylib.WindowShouldClose())
 
     en.DisplayCondition(new(500, 100), 0.7f);
 
-    for (int i = 0; i < wow.ActionsButtons.Count; i++)
-    {
-        wow.ActionsButtons[i].draw(new(500+200*i,500));
-        wow.ActionsButtons[i].Update(new(500+200*i,500));
-    }
-    for (int i = 0; i < en.ActionsButtons.Count; i++)
-    {
-        en.ActionsButtons[i].draw(new(500+200*i,600));
-        en.ActionsButtons[i].Update(new(500+200*i,600));
-    }
-
-    Console.WriteLine(wow.Alive);
+    //yup    fint
+    currentMonstersTurn = currentMonstersTurn.MyTurn(currentMonstersTurn);
 
     Raylib.EndDrawing();
 }
